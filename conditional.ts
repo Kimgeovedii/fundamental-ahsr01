@@ -9,7 +9,7 @@
 
 // Contoh data :
 let nama: string = "edo";
-let usia: number = 20;
+let usia: number = 24;
 let email: string = "edo@mail.com";
 
 // IF STATEMENT
