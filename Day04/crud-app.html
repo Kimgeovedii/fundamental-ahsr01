@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let products;
+      const savedProducts = localStorage.getItem("products");
+
+      if (savedProducts) {
+        products = JSON.parse(savedProducts);
+      } else {
+        products = [
+          ["1", "Laptop", 12, 10000000],
+          ["2", "Printer", 20, 4500000],
+          ["3", "Keyboard", 4, 2000000],
+        ];
+        localStorage.setItem("products", JSON.stringify(products));
+      }
+
+      const menu = prompt(
+        "Menu:\n" +
+          "1. Lihat Daftar Produk\n" +
+          "2. Tambah Produk\n" +
+          "3. Update Produk\n" +
+          "4. Hapus Produk\n" +
+          "5. Keluar\n\n" +
+          "Pilih menu (1-5):"
+      );
+
+      switch (menu) {
+        case "1":
+          let productList = "Daftar Produk:\n\n";
+          products.forEach((product, index) => {
+            productList += `${index + 1}. ID: ${product[0]} | Nama: ${
+              product[1]
+            } | Stok: ${product[2]} | Harga: ${product[3]}\n`;
+          });
+
+          alert(productList);
+          break;
+
+        case "2":
+          const id = prompt("Masukkan ID produk:");
+          const name = prompt("Masukkan nama produk:");
+          const stock = parseInt(prompt("Masukkan stok produk:"));
+          const price = parseInt(prompt("Masukkan harga produk:"));
+
+          if (id && name && !isNaN(stock) && !isNaN(price)) {
+            products.push([id, name, stock, price]);
+            alert("Produk berhasil ditambahkan!");
+          } else {
+            alert("Input tidak valid. Produk gagal ditambahkan.");
+          }
+          break;
+
+        case "3":
+          const productIdUpdate = prompt(
+            "Masukkan ID produk yang ingin diupdate:"
+          );
+          const productIndexUpdate = products.findIndex(
+            (p) => p[0] === productIdUpdate
+          );
+
+          if (productIndexUpdate !== -1) {
+            const newName = prompt(
+              `Masukkan nama baru (lama: ${products[productIndexUpdate][1]}):`
+            );
+            const newStock = parseInt(
+              prompt(
+                `Masukkan stok baru (lama: ${products[productIndexUpdate][2]}):`
+              )
+            );
+            const newPrice = parseInt(
+              prompt(
+                `Masukkan harga baru (lama: ${products[productIndexUpdate][3]}):`
+              )
+            );
+
+            if (newName) products[productIndexUpdate][1] = newName;
+            if (!isNaN(newStock)) products[productIndexUpdate][2] = newStock;
+            if (!isNaN(newPrice)) products[productIndexUpdate][3] = newPrice;
+
+            alert("Produk berhasil diperbarui!");
+          } else {
+            alert("Produk tidak ditemukan.");
+          }
+          break;
+
+        case "4":
+          const productIdDelete = prompt(
+            "Masukkan ID produk yang ingin dihapus:"
+          );
+          const productIndexDelete = products.findIndex(
+            (p) => p[0] === productIdDelete
+          );
+
+          if (productIndexDelete !== -1) {
+            const confirmation = confirm(
+              `Apakah Anda yakin ingin menghapus produk ${products[productIndexDelete][1]}?`
+            );
+            if (confirmation) {
+              products.splice(productIndexDelete, 1);
+              alert("Produk berhasil dihapus!");
+            } else {
+              alert("Penghapusan dibatalkan.");
+            }
+          } else {
+            alert("Produk tidak ditemukan.");
+          }
+          break;
+
+        case "5":
+          alert("Terima kasih, sampai jumpa!");
+          break;
+
+        default:
+          alert("Pilihan tidak valid.");
+          break;
+      }
+      localStorage.setItem("products", JSON.stringify(products));
+      if (menu !== "5") {
+        const backToMenu = confirm("Apakah Anda ingin kembali ke menu utama?");
+        if (backToMenu) {
+          window.location.reload();
+        } else {
+          alert("Terima kasih, sampai jumpa!");
+        }
+      }
+    </script>
+  </body>
+</html>
